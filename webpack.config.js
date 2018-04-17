@@ -22,7 +22,23 @@ const config = {
         // 关于模块配置
         rules: [
             // 模块规则（配置 loader、解析器等选项）
-            { test: /\.css$/, loader: "style-loader!css-loader" }
+            { test: /\.css$/, loader: "style-loader!css-loader" },
+            {
+                oneOf: [
+                    // "url" loader works like "file" loader except that it embeds assets
+                    // smaller than specified limit in bytes as data URLs to avoid requests.
+                    // A missing `test` is equivalent to a match.
+                    {
+                        test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
+                        loader: require.resolve('url-loader'),
+                        options: {
+                            limit: 10000,
+                            name: 'imgs/[name].[hash:8].[ext]',
+                        },
+                    }
+                ]
+            }
+            
         ]
     },
     plugins:[
